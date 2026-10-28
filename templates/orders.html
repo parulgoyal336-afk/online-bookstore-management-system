@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block content %}<h2 class="mb-3">Order history</h2>
+{% if not orders %}<p>No orders yet. <a href="{{ url_for('index') }}">Find a book</a></p>{% endif %}
+{% for o in orders %}<div class="card p-3 mb-3"><div class="d-flex justify-content-between"><strong>Order #{{ o.order_id }}</strong>
+<span class="badge text-bg-{{ {'PENDING':'warning','PROCESSING':'info','SHIPPED':'primary','DELIVERED':'success','CANCELLED':'danger'}[o.status] }}">{{ o.status }}</span></div>
+<div class="small text-muted">{{ o.order_date.strftime('%d %b %Y, %I:%M %p') }}</div><div class="my-2">{{ o["items"] }}</div>
+<div class="price">₹{{ '%.2f'|format(o.total_amount) }}</div></div>{% endfor %}{% endblock %}

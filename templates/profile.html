@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block content %}
+<div class="card mx-auto p-4" style="max-width:480px"><h3 class="mb-3">Your profile</h3>
+<form method="post"><label class="small">Email</label><input class="form-control mb-2" value="{{ u[1] }}" disabled>
+<label class="small">Name</label><input name="name" class="form-control mb-2" value="{{ u[0] }}" required>
+<label class="small">Delivery address</label><input name="address" class="form-control mb-3" value="{{ u[2] }}" required>
+<button class="btn btn-brass">Save changes</button></form></div>{% endblock %}

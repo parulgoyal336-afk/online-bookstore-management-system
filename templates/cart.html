@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block content %}<h2 class="mb-3">Your cart</h2>
+{% if not items %}<p>Your cart is empty. <a href="{{ url_for('index') }}">Browse books</a></p>{% else %}
+<div class="card"><table class="table align-middle mb-0"><thead><tr><th>Book</th><th>Price</th><th style="width:140px">Qty</th><th class="text-end">Subtotal</th></tr></thead>
+{% for i in items %}<tr><td><strong>{{ i.title }}</strong><div class="small text-muted">{{ i.author }}</div></td><td>₹{{ '%.2f'|format(i.price) }}</td>
+<td><form method="post" action="{{ url_for('cart_update', bid=i.book_id) }}" class="d-flex gap-1">
+<input type="number" name="qty" min="0" value="{{ i.quantity }}" class="form-control form-control-sm"><button class="btn btn-sm btn-outline-secondary">Update</button></form></td>
+<td class="text-end">₹{{ '%.2f'|format(i.subtotal) }}</td></tr>{% endfor %}</table></div>
+<div class="d-flex justify-content-between align-items-center mt-3"><h4 class="mb-0">Total ₹{{ '%.2f'|format(total) }}</h4>
+<form method="post" action="{{ url_for('checkout') }}"><button class="btn btn-brass btn-lg">Place order</button></form></div>{% endif %}{% endblock %}

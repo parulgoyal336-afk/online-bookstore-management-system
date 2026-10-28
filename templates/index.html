@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block content %}
+<div class="hero mb-4"><h1>Find your next read</h1>
+<p class="mb-3">Search by title, author or category.</p>
+<form class="row g-2" style="max-width:520px"><div class="col"><input name="q" value="{{ q }}" class="form-control" placeholder="e.g. Fiction, Kalam, Clean Code"></div>
+<div class="col-auto"><button class="btn btn-brass">Search</button></div></form></div>
+{% if not books %}<p class="text-muted">No books match "{{ q }}". Try a different title, author or category.</p>{% endif %}
+<div class="row g-4">{% for b in books %}
+<div class="col-6 col-md-4 col-lg-3"><div class="card h-100">
+<div class="spine" style="background:hsl({{ (b.title|length * 47) % 360 }},38%,32%)">{{ b.title }}</div>
+<div class="card-body d-flex flex-column"><div class="small text-muted">{{ b.author }} · {{ b.category }}</div>
+<div class="price my-2">₹{{ '%.2f'|format(b.price) }}</div>
+<div class="small mb-3 {{ 'text-danger' if b.quantity == 0 else 'text-success' }}">{{ 'Out of stock' if b.quantity == 0 else b.quantity ~ ' in stock' }}</div>
+<form method="post" action="{{ url_for('cart_add', bid=b.book_id) }}" class="mt-auto">
+<button class="btn btn-brass w-100" {{ 'disabled' if b.quantity == 0 }}>Add to cart</button></form></div></div></div>
+{% endfor %}</div>{% endblock %}

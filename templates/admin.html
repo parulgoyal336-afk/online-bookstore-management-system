@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% block content %}<h2 class="mb-3">Dashboard</h2>
+<div class="row g-3 mb-4">
+<div class="col-md-4"><div class="card p-3"><div class="small text-muted">Revenue</div><h3 class="mb-0">₹{{ '%.2f'|format(revenue) }}</h3></div></div>
+<div class="col-md-4"><div class="card p-3"><div class="small text-muted">Orders</div><h3 class="mb-0">{{ orders|length }}</h3></div></div>
+<div class="col-md-4"><div class="card p-3"><div class="small text-muted">Titles in catalog</div><h3 class="mb-0">{{ books|length }}</h3></div></div></div>
+<div class="row g-4 mb-4"><div class="col-lg-6"><div class="card p-3"><h5>Best sellers</h5><table class="table table-sm mb-0">
+{% for b in best %}<tr><td>{{ b.title }}</td><td>{{ b.sold }} sold</td><td class="text-end">₹{{ '%.0f'|format(b.revenue) }}</td></tr>{% else %}<tr><td class="text-muted">No sales yet.</td></tr>{% endfor %}</table></div></div>
+<div class="col-lg-6"><div class="card p-3"><h5>Sales trend (last 7 days with sales)</h5><table class="table table-sm mb-0">
+{% for t in trend %}<tr><td>{{ t.day.strftime('%d %b') }}</td><td>{{ t.orders }} orders</td><td class="text-end">₹{{ '%.0f'|format(t.revenue) }}</td></tr>{% else %}<tr><td class="text-muted">No sales yet.</td></tr>{% endfor %}</table></div></div></div>
+<div class="card p-3 mb-4"><h5>Add a book</h5><form method="post" action="{{ url_for('admin_add') }}" class="row g-2">
+<div class="col-md-3"><input name="title" class="form-control" placeholder="Title" required></div>
+<div class="col-md-2"><input name="author" class="form-control" placeholder="Author" required></div>
+<div class="col-md-2"><input name="category" class="form-control" placeholder="Category"></div>
+<div class="col-md-2"><input name="price" type="number" step="0.01" min="1" class="form-control" placeholder="Price" required></div>
+<div class="col-md-1"><input name="qty" type="number" min="0" class="form-control" placeholder="Qty" required></div>
+<div class="col-md-2"><button class="btn btn-brass w-100">Add book</button></div></form></div>
+<div class="card p-3 mb-4"><h5>Books</h5><div class="table-responsive"><table class="table align-middle mb-0"><tr><th>Title</th><th>Price</th><th>Stock</th><th></th></tr>
+{% for b in books %}<tr><td>{{ b.title }}</td><form method="post" action="{{ url_for('admin_update', bid=b.book_id) }}">
+<td><input name="price" type="number" step="0.01" value="{{ b.price }}" class="form-control form-control-sm" style="width:110px"></td>
+<td><input name="qty" type="number" min="0" value="{{ b.quantity }}" class="form-control form-control-sm" style="width:90px"></td>
+<td class="text-end"><button class="btn btn-sm btn-brass">Save</button> <button name="delete" value="1" class="btn btn-sm btn-outline-danger" onclick="return confirm('Remove this book?')">Remove</button></td></form></tr>{% endfor %}</table></div></div>
+<div class="card p-3"><h5>Orders</h5><div class="table-responsive"><table class="table align-middle mb-0"><tr><th>#</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th></tr>
+{% for o in orders %}<tr><td>{{ o.order_id }}</td><td>{{ o.customer }}</td><td>{{ o.order_date.strftime('%d %b %Y') }}</td><td>₹{{ '%.2f'|format(o.total_amount) }}</td>
+<td><form method="post" action="{{ url_for('admin_status', oid=o.order_id) }}" class="d-flex gap-1"><select name="status" class="form-select form-select-sm" style="width:140px">
+{% for s in ['PENDING','PROCESSING','SHIPPED','DELIVERED','CANCELLED'] %}<option {{ 'selected' if s == o.status }}>{{ s }}</option>{% endfor %}</select>
+<button class="btn btn-sm btn-outline-secondary">Update</button></form></td></tr>{% endfor %}</table></div></div>{% endblock %}
