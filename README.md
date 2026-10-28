@@ -9,4 +9,4 @@ Features
 
 Tech stack: Oracle Database Free, PL/SQL, Python 3, Flask, python-oracledb, HTML, CSS, Bootstrap 5
 
-Setup: run database/01_schema.sql, 02_plsql.sql and 03_seed.sql in Oracle, then pip install -r requirements.txt and python app.py
+Setup: run database/01_schema.sql, 02_plsql.sql and 03_seed.sql in Oracle, then pip install -r requirements.txt and python app.py 
