@@ -4,6 +4,7 @@ Folio Books is a web-based Online Bookstore Management System. The core business
 
 ---
 
+<<<<<<< HEAD
 ## 🚀 Features & Architecture
 
 * **User Management:** Registration, login, and profile management (secured with SHA-256 hashed passwords).
